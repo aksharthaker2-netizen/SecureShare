@@ -1,12 +1,49 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function Dashboard() {
 
   const [selectedFile, setSelectedFile] = useState(null);
 
+  const [files, setFiles] = useState([]);
+
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
+
+  const fetchFiles = async () => {
+
+    try {
+
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        "http://localhost:5000/api/files/myfiles",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (Array.isArray(data)) {
+        setFiles(data);
+      } else {
+        setFiles([]);
+      }
+
+    } catch (error) {
+
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFiles();
+  }, []);
 
   const handleUpload = async () => {
 
@@ -40,6 +77,8 @@ function Dashboard() {
 
       alert(data.message);
 
+      fetchFiles();
+
     } catch (error) {
 
       console.log(error);
@@ -63,6 +102,37 @@ function Dashboard() {
       <button onClick={handleUpload}>
         Upload File
       </button>
+
+      <hr />
+
+      <h2>My Files</h2>
+
+      {
+        Array.isArray(files) &&
+        files.map((file) => (
+
+          <div
+            key={file.id}
+            style={{
+              border: "1px solid gray",
+              padding: "10px",
+              marginBottom: "10px",
+            }}
+          >
+
+            <p>{file.filename}</p>
+
+            <a
+              href={`http://localhost:5000/${file.filepath}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Open File
+            </a>
+
+          </div>
+        ))
+      }
 
     </div>
   );

@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -37,6 +38,7 @@ function Login() {
       console.log(data);
 
       localStorage.setItem("token", data.token);
+      navigate("/dashboard");
 
     } catch (error) {
 

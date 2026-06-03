@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import FileCard from "../components/FileCard";
 
 function Dashboard() {
 
   const [selectedFile, setSelectedFile] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [files, setFiles] = useState([]);
 
@@ -16,7 +19,7 @@ function Dashboard() {
   const fetchFiles = async () => {
 
     try {
-
+      setLoading(true);
       const token = localStorage.getItem("token");
 
       const response = await fetch(
@@ -37,6 +40,7 @@ function Dashboard() {
       } else {
         setFiles([]);
       }
+      setLoading(false);
 
     } catch (error) {
 
@@ -125,7 +129,8 @@ function Dashboard() {
   }
   };
   return (
-
+  <>
+    <Navbar />
     <div style={{ padding: "40px" }}>
 
       <h1>Secure Dashboard</h1>      
@@ -148,38 +153,31 @@ function Dashboard() {
 
       <h2>My Files</h2>
 
-      {
-        Array.isArray(files) &&
-        files.map((file) => (
+{
+  loading ? (
 
-          <div
-            key={file.id}
-            style={{
-              border: "1px solid gray",
-              padding: "10px",
-              marginBottom: "10px",
-            }}
-          >
+    <p>Loading files...</p>
 
-            <p>{file.filename}</p>
-             <button
-              onClick={() => handleDelete(file.id)}
-              >
-              Delete
-              </button>
-            <a
-              href={`http://localhost:5000/${file.filepath}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open File
-            </a>
+  ) : files.length === 0 ? (
 
-          </div>
-        ))
-      }
+    <p>No files uploaded yet.</p>
 
+  ) : (
+
+    files.map((file) => (
+
+      <FileCard
+        key={file.id}
+        file={file}
+        onDelete={handleDelete}
+      />
+
+    ))
+
+  )
+}
     </div>
+    </>
   );
 }
 

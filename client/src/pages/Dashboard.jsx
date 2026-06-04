@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import FileCard from "../components/FileCard";
 
 function Dashboard() {
+  const fileInputRef = useRef(null);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -83,6 +84,11 @@ function Dashboard() {
       console.log(data);
 
       alert(data.message);
+      setSelectedFile(null);
+
+      if (fileInputRef.current) {
+       fileInputRef.current.value = "";
+      }
 
       fetchFiles();
 
@@ -128,6 +134,39 @@ function Dashboard() {
     console.log(error);
   }
   };
+ 
+ 
+  const handleShare = async (id) => {
+
+  console.log("Share clicked", id);
+
+  try {
+
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(
+      `http://localhost:5000/api/files/share/${id}`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    console.log("Status:", response.status);
+
+    const data = await response.json();
+
+    console.log("Data:", data);
+
+    alert(data.shareUrl);
+
+  } catch (error) {
+
+    console.log(error);
+  }
+};
   return (
   <>
     <Navbar />
@@ -138,9 +177,10 @@ function Dashboard() {
        Logout
       </button>
 
-      <input
-        type="file"
-        onChange={handleFileChange}
+     <input
+      type="file"
+      ref={fileInputRef}
+       onChange={handleFileChange}
       />
 
       <br /><br />
@@ -167,9 +207,10 @@ function Dashboard() {
     files.map((file) => (
 
       <FileCard
-        key={file.id}
-        file={file}
-        onDelete={handleDelete}
+      key={file.id}
+      file={file}
+      onDelete={handleDelete}
+       onShare={handleShare}
       />
 
     ))

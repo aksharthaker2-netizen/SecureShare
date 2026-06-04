@@ -4,6 +4,7 @@ import upload from "../middleware/uploadMiddleware.js";
 import verifyToken from "../middleware/authMiddleware.js";
 import db from "../config/db.js";
 import fs from "fs";
+import { v4 as uuidv4 } from "uuid";
 
 const router = express.Router();
 
@@ -134,6 +135,67 @@ router.delete(
                 });
               }
             );
+          }
+        );
+      }
+    );
+  }
+);
+router.post(
+  "/share/:id",
+  verifyToken,
+  (req, res) => {
+
+    const fileId = req.params.id;
+
+    const sql =
+      "SELECT * FROM files WHERE id = ?";
+
+    db.query(
+      sql,
+      [fileId],
+      (err, result) => {
+
+        if (err) {
+          return res.status(500).json({
+            message: "Database error",
+          });
+        }
+
+        if (result.length === 0) {
+          return res.status(404).json({
+            message: "File not found",
+          });
+        }
+
+        const file = result[0];
+
+        if (file.uploaded_by !== req.user.id) {
+          return res.status(403).json({
+            message: "Unauthorized",
+          });
+        }
+
+        const token = uuidv4();
+
+        const insertSql =
+          "INSERT INTO shared_files (file_id, share_token) VALUES (?, ?)";
+
+        db.query(
+          insertSql,
+          [fileId, token],
+          (err) => {
+
+            if (err) {
+              return res.status(500).json({
+                message: "Share failed",
+              });
+            }
+
+            res.json({
+              shareUrl:
+                `http://localhost:5173/share/${token}`
+            });
           }
         );
       }

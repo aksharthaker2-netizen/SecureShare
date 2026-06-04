@@ -1,4 +1,4 @@
-function FileCard({ file, onDelete }) {
+function FileCard({ file, onDelete,onShare }) {
 
   return (
     <div
@@ -32,6 +32,13 @@ function FileCard({ file, onDelete }) {
       >
         Delete
       </button>
+      <br /><br />
+
+    <button
+    onClick={() => onShare(file.id)}
+    >
+    Share
+    </button>
     </div>
   );
 }

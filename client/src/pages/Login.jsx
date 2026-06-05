@@ -33,12 +33,20 @@ function Login() {
 
       const data = await response.json();
 
-      alert(data.message);
+      if (response.ok) {
 
-      console.log(data);
+        localStorage.setItem(
+          "token",
+          data.token
+        );
 
-      localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+        navigate("/dashboard");
+
+      } else {
+
+        alert(data.message);
+
+      }
 
     } catch (error) {
 

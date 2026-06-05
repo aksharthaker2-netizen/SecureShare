@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
-
+import SharedFile from "./pages/SharedFile";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
@@ -20,7 +20,10 @@ function App() {
           path="/signup"
           element={<Signup />}
         />
-
+        <Route
+        path="/share/:token"
+        element={<SharedFile />}
+      />
         <Route
           path="/login"
           element={<Login />}

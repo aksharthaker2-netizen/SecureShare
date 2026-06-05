@@ -77,7 +77,9 @@ if (error) {
       <hr />
 
       <h3>{file.filename}</h3>
-
+      <p>
+         Views: {file.view_count}
+        </p>
       <p>
         This file was shared with you.
       </p>

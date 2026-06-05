@@ -55,7 +55,7 @@ router.get(
   (req, res) => {
 
     const sql =
-      "SELECT * FROM files WHERE uploaded_by = ?";
+      "SELECT files.*, COALESCE(SUM(shared_files.view_count),0) AS total_views FROM files LEFT JOIN shared_files ON files.id = shared_files.file_id WHERE uploaded_by = ? GROUP BY files.id";
 
     db.query(
       sql,

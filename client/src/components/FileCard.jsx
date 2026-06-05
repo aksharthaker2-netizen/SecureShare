@@ -9,7 +9,11 @@ function FileCard({ file, onDelete,onShare }) {
       }}
     >
       <h3>{file.filename}</h3>
-
+      <p>
+      Total Views:
+      {" "}
+      {file.total_views}
+    </p>
       <p>
         Uploaded:
         {" "}

@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 function SharedFile() {
 
   const { token } = useParams();
+  const [error, setError] =
+  useState("");
 
   const [file, setFile] = useState(null);
 
@@ -15,32 +17,70 @@ function SharedFile() {
 
   const fetchSharedFile = async () => {
 
-    try {
+  try {
 
-      const response = await fetch(
-        `http://localhost:5000/api/share/${token}`
-      );
+    const response = await fetch(
+      `http://localhost:5000/api/share/${token}`
+    );
 
-      const data = await response.json();
+    if (!response.ok) {
 
-      setFile(data);
+      const data =
+        await response.json();
 
-    } catch (error) {
+      setError(data.message);
 
-      console.log(error);
+      return;
     }
-  };
 
+    const data = await response.json();
+
+    setFile(data);
+
+  } catch (error) {
+
+    console.log(error);
+  }
+};
+if (error) {
+
+  return (
+    <h2>
+      {error}
+    </h2>
+  );
+}
+  
   if (!file) {
     return <h2>Loading...</h2>;
   }
 
   return (
-    <div style={{ padding: "40px" }}>
+  <div
+    style={{
+      padding: "40px",
+      maxWidth: "600px",
+      margin: "auto",
+    }}
+  >
+
+    <div
+      style={{
+        border: "1px solid gray",
+        padding: "20px",
+        borderRadius: "10px",
+      }}
+    >
 
       <h1>Shared File</h1>
 
+      <hr />
+
       <h3>{file.filename}</h3>
+
+      <p>
+        This file was shared with you.
+      </p>
 
       <a
         href={`http://localhost:5000/${file.filepath}`}
@@ -51,7 +91,9 @@ function SharedFile() {
       </a>
 
     </div>
-  );
+
+  </div>
+);
 }
 
 export default SharedFile;

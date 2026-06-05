@@ -160,7 +160,13 @@ function Dashboard() {
 
     console.log("Data:", data);
 
-    alert(data.shareUrl);
+    await navigator.clipboard.writeText(
+    data.shareUrl
+    );
+
+    alert(
+      "Share link copied!"
+    );
 
   } catch (error) {
 

@@ -26,7 +26,7 @@ app.get(
     const token = req.params.token;
 
     const sql = `
-      SELECT files.*
+      SELECT files.*, shared_files.expires_at
       FROM shared_files
       JOIN files
       ON shared_files.file_id = files.id
@@ -50,7 +50,18 @@ app.get(
           });
         }
 
-        res.json(result[0]);
+        const file = result[0];
+
+        if (
+          file.expires_at &&
+          new Date(file.expires_at) < new Date()
+        ) {
+          return res.status(403).json({
+            message: "Share link expired",
+          });
+        }
+
+        res.json(file);
       }
     );
   }

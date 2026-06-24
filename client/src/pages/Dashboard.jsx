@@ -56,7 +56,7 @@ function Dashboard() {
 
       const data = await response.json();
 
-      console.log(data);
+      
 
       if (Array.isArray(data)) {
         setFiles(data);
@@ -67,7 +67,7 @@ function Dashboard() {
 
     } catch (error) {
 
-      console.log(error);
+      
     }
   };
 
@@ -104,7 +104,7 @@ function Dashboard() {
 
       const data = await response.json();
 
-      console.log(data);
+      ;
 
       alert(data.message);
       setSelectedFile(null);
@@ -118,7 +118,7 @@ function Dashboard() {
 
     } catch (error) {
 
-      console.log(error);
+      ;
 
       alert("Upload failed");
     }
@@ -156,14 +156,14 @@ function Dashboard() {
 
   } catch (error) {
 
-    console.log(error);
+    ;
   }
   };
  
  
   const handleShare = async (id) => {
 
-  console.log("Share clicked", id);
+
 
   try {
 
@@ -179,11 +179,11 @@ function Dashboard() {
       }
     );
 
-    console.log("Status:", response.status);
+    
 
     const data = await response.json();
 
-    console.log("Data:", data);
+   
 
     await navigator.clipboard.writeText(
     data.shareUrl
@@ -195,7 +195,7 @@ function Dashboard() {
 
   } catch (error) {
 
-    console.log(error);
+    ;
   }
 };
   return (

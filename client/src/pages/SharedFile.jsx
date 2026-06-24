@@ -39,7 +39,7 @@ function SharedFile() {
 
   } catch (error) {
 
-    console.log(error);
+    ;
   }
 };
 if (error) {

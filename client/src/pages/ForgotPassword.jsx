@@ -8,7 +8,7 @@ function ForgotPassword() {
 
     e.preventDefault();
 
-    console.log(email);
+   
 
   };
 

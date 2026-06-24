@@ -55,7 +55,6 @@ function FileCard({ file, onDelete,onShare }) {
 </button>
   <button
  onClick={() => {
-  console.log("Manage clicked");
   navigate(`/shares/${file.id}`);
 }}
 >

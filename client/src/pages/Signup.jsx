@@ -35,11 +35,11 @@ function Signup() {
 
       alert(data.message);
 
-      console.log(data);
+      ;
 
     } catch (error) {
 
-      console.log(error);
+      ;
 
       alert("Signup failed");
     }

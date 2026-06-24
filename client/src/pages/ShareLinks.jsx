@@ -31,7 +31,7 @@ function ShareLinks() {
 
     } catch (error) {
 
-      console.log(error);
+      ;
     }
   };
 
@@ -68,7 +68,7 @@ function ShareLinks() {
 
     } catch (error) {
 
-      console.log(error);
+      ;
     }
   };
 

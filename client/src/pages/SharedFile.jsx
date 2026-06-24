@@ -89,7 +89,11 @@ if (error) {
         target="_blank"
         rel="noreferrer"
       >
-        Open File
+        <a
+        href={`http://localhost:5000/api/download/${token}`}
+      >
+        Download File
+      </a>
       </a>
 
     </div>

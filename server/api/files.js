@@ -202,4 +202,51 @@ router.post(
     );
   }
 );
+router.get(
+  "/stats",
+  verifyToken,
+  (req, res) => {
+
+    const userId = req.user.id;
+
+    const sql = `
+      SELECT
+      COUNT(DISTINCT files.id)
+      AS total_files,
+
+      COALESCE(
+      SUM(shared_files.view_count),
+      0
+      ) AS total_views,
+
+      COALESCE(
+      SUM(shared_files.download_count),
+      0
+      ) AS total_downloads
+
+      FROM files
+
+      LEFT JOIN shared_files
+      ON files.id =
+      shared_files.file_id
+
+      WHERE files.uploaded_by = ?
+    `;
+
+    db.query(
+      sql,
+      [userId],
+      (err, result) => {
+
+        if (err) {
+          return res.status(500).json({
+            message: "Database error",
+          });
+        }
+
+        res.json(result[0]);
+      }
+    );
+  }
+);
 export default router;

@@ -81,7 +81,59 @@ app.get(
     );
   }
 );
+app.get(
+  "/api/download/:token",
+  (req, res) => {
 
+    const token = req.params.token;
+
+    const sql = `
+      SELECT files.*,
+      shared_files.download_count
+      FROM shared_files
+      JOIN files
+      ON shared_files.file_id = files.id
+      WHERE shared_files.share_token = ?
+    `;
+
+    db.query(
+      sql,
+      [token],
+      (err, result) => {
+
+        if (err) {
+          return res.status(500).json({
+            message: "Database error",
+          });
+        }
+
+        if (result.length === 0) {
+          return res.status(404).json({
+            message: "Invalid link",
+          });
+        }
+
+        const file = result[0];
+
+        const updateSql = `
+          UPDATE shared_files
+          SET download_count =
+          download_count + 1
+          WHERE share_token = ?
+        `;
+
+        db.query(
+          updateSql,
+          [token]
+        );
+
+        res.redirect(
+          `http://localhost:5000/${file.filepath}`
+        );
+      }
+    );
+  }
+);
 app.listen(5000, () => {
   console.log("Server running on port 5000");
 });

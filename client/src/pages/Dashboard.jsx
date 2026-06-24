@@ -8,6 +8,7 @@ function Dashboard() {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] =useState(null);
 
   const [files, setFiles] = useState([]);
 
@@ -16,7 +17,27 @@ function Dashboard() {
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
+  const fetchStats = async () => {
 
+  const token =
+  localStorage.getItem("token");
+
+  const response =
+  await fetch(
+    "http://localhost:5000/api/files/stats",
+    {
+      headers: {
+        Authorization:
+        `Bearer ${token}`
+      }
+    }
+  );
+
+  const data =
+  await response.json();
+
+  setStats(data);
+};
   const fetchFiles = async () => {
 
     try {
@@ -51,6 +72,7 @@ function Dashboard() {
 
   useEffect(() => {
     fetchFiles();
+    fetchStats();
   }, []);
 
   const handleUpload = async () => {
@@ -196,7 +218,35 @@ function Dashboard() {
       </button>
 
       <hr />
+      {
+  stats && (
 
+    <div>
+
+      <h2>
+        Dashboard Stats
+      </h2>
+
+      <p>
+        Files:
+        {stats.total_files}
+      </p>
+
+      <p>
+        Views:
+        {stats.total_views}
+      </p>
+
+      <p>
+        Downloads:
+        {stats.total_downloads}
+      </p>
+
+      <hr />
+
+    </div>
+  )
+}
       <h2>My Files</h2>
 
 {

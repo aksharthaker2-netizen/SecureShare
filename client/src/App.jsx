@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import SharedFile from "./pages/SharedFile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import ShareLinks from "./pages/ShareLinks";
 
 function App() {
 
@@ -12,6 +13,14 @@ function App() {
     <BrowserRouter>
 
       <Routes>
+        <Route
+  path="/shares/:fileId"
+  element={
+    <ProtectedRoute>
+      <ShareLinks />
+    </ProtectedRoute>
+  }
+/>
         <Route
          path="/"
         element={<Navigate to="/login" />}

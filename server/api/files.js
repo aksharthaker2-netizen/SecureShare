@@ -249,4 +249,64 @@ router.get(
     );
   }
 );
+router.get(
+  "/shares/:fileId",
+  verifyToken,
+  (req, res) => {
+
+    const fileId = req.params.fileId;
+
+    const sql = `
+      SELECT *
+      FROM shared_files
+      WHERE file_id = ?
+      ORDER BY id DESC
+    `;
+
+    db.query(
+      sql,
+      [fileId],
+      (err, result) => {
+
+        if (err) {
+          return res.status(500).json({
+            message: "Database error",
+          });
+        }
+
+        res.json(result);
+      }
+    );
+  }
+);
+router.delete(
+  "/shares/:shareId",
+  verifyToken,
+  (req, res) => {
+
+    const shareId = req.params.shareId;
+
+    const sql = `
+      DELETE FROM shared_files
+      WHERE id = ?
+    `;
+
+    db.query(
+      sql,
+      [shareId],
+      (err) => {
+
+        if (err) {
+          return res.status(500).json({
+            message: "Database error",
+          });
+        }
+
+        res.json({
+          message: "Share link revoked",
+        });
+      }
+    );
+  }
+);
 export default router;

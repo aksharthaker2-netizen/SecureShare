@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router-dom";
 function FileCard({ file, onDelete,onShare }) {
-
+  const navigate = useNavigate();
   return (
    <div
   style={{
@@ -51,6 +52,14 @@ function FileCard({ file, onDelete,onShare }) {
   onClick={() => onShare(file.id)}
 >
   Share
+</button>
+  <button
+ onClick={() => {
+  console.log("Manage clicked");
+  navigate(`/shares/${file.id}`);
+}}
+>
+  Manage Links
 </button>
     </div>
   );

@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import FileCard from "../components/FileCard";
+import "./Dashboard.css";
 
 function Dashboard() {
   const fileInputRef = useRef(null);
@@ -113,6 +114,7 @@ function Dashboard() {
       }
 
       fetchFiles();
+      fetchStats();
 
     } catch (error) {
 
@@ -150,6 +152,7 @@ function Dashboard() {
     alert(data.message);
 
     fetchFiles();
+    fetchStats();
 
   } catch (error) {
 
@@ -198,51 +201,65 @@ function Dashboard() {
   return (
   <>
     <Navbar />
-    <div style={{ padding: "40px" }}>
+    <div className="dashboard-container">
 
-      <h1>Secure Dashboard</h1>      
-      <button onClick={handleLogout}>
-       Logout
-      </button>
+      <div className="dashboard-header">
+  <h1>Secure Dashboard</h1>
+  <p>Upload, manage and share your files securely</p>
+</div> 
+<div className="upload-section">
 
-     <input
-      type="file"
-      ref={fileInputRef}
-       onChange={handleFileChange}
-      />
+  <label
+    htmlFor="file-upload"
+    className="choose-file-btn"
+  >
+    Choose File
+  </label>
 
-      <br /><br />
+  <input
+    id="file-upload"
+    type="file"
+    ref={fileInputRef}
+    onChange={handleFileChange}
+    style={{ display: "none" }}
+  />
 
-      <button onClick={handleUpload}>
-        Upload File
-      </button>
+  <span className="file-name">
+    {
+      selectedFile
+        ? selectedFile.name
+        : ""
+    }
+  </span>
+
+  <button
+    className="upload-btn"
+    onClick={handleUpload}
+  >
+    Upload File
+  </button>
+
+</div>
 
       <hr />
-      {
+  {
   stats && (
+    <div className="stats-container">
 
-    <div>
+      <div className="stat-card">
+        <h3>Files</h3>
+        <p>{stats.total_files}</p>
+      </div>
 
-      <h2>
-        Dashboard Stats
-      </h2>
+      <div className="stat-card">
+        <h3>Views</h3>
+        <p>{stats.total_views}</p>
+      </div>
 
-      <p>
-        Files:
-        {stats.total_files}
-      </p>
-
-      <p>
-        Views:
-        {stats.total_views}
-      </p>
-
-      <p>
-        Downloads:
-        {stats.total_downloads}
-      </p>
-
-      <hr />
+      <div className="stat-card">
+        <h3>Downloads</h3>
+        <p>{stats.total_downloads}</p>
+      </div>
 
     </div>
   )
@@ -256,7 +273,11 @@ function Dashboard() {
 
   ) : files.length === 0 ? (
 
-    <p>No files uploaded yet.</p>
+    <div className="empty-state">
+  <h2>📁</h2>
+  <p>No files uploaded yet.</p>
+  <p>Upload your first file.</p>
+</div>
 
   ) : (
 

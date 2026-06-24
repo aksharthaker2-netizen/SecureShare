@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./Login.css";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -57,8 +58,8 @@ function Login() {
   };
 
   return (
-    <div style={{ padding: "40px" }}>
-
+    <div className="auth-container">
+      <div className="auth-box">
       <h1>SecureShare Login</h1>
 
       <form onSubmit={handleSubmit}>
@@ -84,9 +85,38 @@ function Login() {
         <button type="submit">
           Login
         </button>
+        <br /><br />
+        <br /><br />
 
+<p
+  style={{
+    cursor: "pointer",
+    color: "#2563eb",
+    fontWeight: "bold"
+  }}
+  onClick={() =>
+    navigate("/forgot-password")
+  }
+>
+  Forgot Password?
+</p>
+
+<p>
+  New User?{" "}
+  <span
+    style={{
+      color: "#2563eb",
+      cursor: "pointer",
+      fontWeight: "bold"
+    }}
+    onClick={() => navigate("/signup")}
+  >
+    Sign Up
+  </span>
+</p>
       </form>
 
+    </div>
     </div>
   );
 }

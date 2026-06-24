@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "./Login.css";
 function Signup() {
 
   const [formData, setFormData] = useState({
@@ -46,7 +46,8 @@ function Signup() {
   };
 
   return (
-    <div style={{ padding: "40px" }}>
+    <div className="auth-container">
+      <div className="auth-box">
 
       <h1>SecureShare Signup</h1>
 
@@ -85,6 +86,7 @@ function Signup() {
 
       </form>
 
+    </div>
     </div>
   );
 }

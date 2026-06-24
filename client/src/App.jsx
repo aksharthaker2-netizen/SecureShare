@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import SharedFile from "./pages/SharedFile";
 import ProtectedRoute from "./components/ProtectedRoute";
 import ShareLinks from "./pages/ShareLinks";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
 
@@ -13,6 +15,14 @@ function App() {
     <BrowserRouter>
 
       <Routes>
+        <Route
+  path="/reset-password/:token"
+  element={<ResetPassword />}
+/>
+        <Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
         <Route
   path="/shares/:fileId"
   element={
